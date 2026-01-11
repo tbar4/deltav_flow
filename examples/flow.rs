@@ -6,11 +6,11 @@ use deltav_flow::utils::DeltavFlowResult;
 #[tokio::main]
 async fn main() -> DeltavFlowResult<()> {
     let source: Box <dyn Source> = Box::new(HttpSource::default());
-    let destination: Box<dyn Destination> = Box::new(FileDestination("./stream/new_stream.blob".to_string()));
+    let destination: Box<dyn Destination> = Box::new(FileDestination("./tests/data/stream/new_stream.blob".to_string()));
     let mut pipe = Pipeline::new(source, destination);
 
     let source1: Box <dyn Source> = Box::new(HttpSource::default());
-    let destination1: Box<dyn Destination> = Box::new(FileDestination("./stream/new_stream1.blob".to_string()));
+    let destination1: Box<dyn Destination> = Box::new(FileDestination("./tests/data/stream/new_stream1.blob".to_string()));
     let mut pipe1 = Pipeline::new(source1, destination1);
     
     let _ = tokio::try_join!(
