@@ -1,0 +1,37 @@
+[package]
+name = "deltav-flow"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+members = [
+    "nanoservices/cli",
+    "nanoservices/core",
+    "nanoservices/server", 
+    "nanoservices/utils",
+]
+
+[workspace.dependencies]
+anyhow = "1.0.100"
+async-trait = "0.1.89"
+aws-sdk-s3 = "1.119.0"
+clap = { version = "4.5.54", features = ["derive"] }
+futures-util = "0.3.31"
+reqwest = { version = "0.13.1", features = ["query", "stream"] }
+thiserror = "2.0.17"
+tokio = { version = "1.49.0", features = ["full"] }
+
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
+
+[dependencies]
+tokio = { workspace = true, features = ["full"] }
+anyhow = "1.0.100"
+async-trait = "0.1.89"
+aws-sdk-s3 = "1.119.0"
+clap = { version = "4.5.54", features = ["derive"] }
+futures-util = "0.3.31"
+reqwest = { version = "0.13.1", features = ["query", "stream"] }
+deltav_core = { path = "nanoservices/core" }
+deltav_utils = { path = "nanoservices/utils" }
