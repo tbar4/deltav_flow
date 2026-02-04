@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeltaV Flow - Pipeline Dashboard (HTMX)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .pulse-dot {
+            animation: pulse-dot 2s infinite;
+        }
+        .pipeline-card {
+            transition: all 0.3s ease;
+        }
+        .pipeline-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        /* Dark mode styles */
+        .dark body {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        
+        .dark .bg-white {
+            background-color: #2d3748;
+        }
+        
+        .dark .text-gray-900 {
+            color: #f7fafc;
+        }
+        
+        .dark .text-gray-600 {
+            color: #a0aec0;
+        }
+        
+        .dark .border-b {
+            border-bottom-color: #4a5568;
+        }
+        
+        .dark .shadow-sm {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+        }
+        
+        .dark .shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dark .bg-gray-50 {
+            background-color: #1a202c;
+        }
+        
+        .dark .text-gray-500 {
+            color: #718096;
+        }
+        
+        .dark .bg-blue-100 {
+            background-color: #2c3a5a;
+        }
+        
+        .dark .text-blue-800 {
+            color: #90cdf4;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b dark:bg-gray-800 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-stream text-blue-600 text-2xl mr-3"></i>
+                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">DeltaV Flow</h1>
+                    <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">Pipeline Dashboard (HTMX)</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600 dark:text-gray-300">Last updated: <span id="lastUpdated">Just now</span></span>
+                    <button id="darkModeToggle" class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button hx-get="/api/refresh" hx-target="#dashboard-content" hx-swap="innerHTML" hx-indicator=".loading-indicator" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading indicator -->
+    <div class="loading-indicator fixed top-4 right-4 hidden">
+        <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg flex items-center">
+            <i class="fas fa-spinner fa-spin mr-2"></i> Updating...
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div id="dashboard-content" hx-get="/api/dashboard" hx-trigger="load" hx-swap="innerHTML">
+            <!-- Dashboard content will be loaded here -->
+            <div class="flex justify-center items-center h-64">
+                <div class="text-center">
+                    <i class="fas fa-spinner fa-spin text-3xl text-blue-500 mb-4"></i>
+                    <p class="text-gray-600">Loading dashboard...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Show loading indicator during HTMX requests
+        document.body.addEventListener('htmx:beforeRequest', function() {
+            document.querySelector('.loading-indicator').classList.remove('hidden');
+        });
+        
+        document.body.addEventListener('htmx:afterOnLoad', function() {
+            document.querySelector('.loading-indicator').classList.add('hidden');
+        });
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            const lastUpdated = document.getElementById('lastUpdated');
+            const now = new Date();
+            lastUpdated.textContent = now.toLocaleTimeString();
+        }, 30000);
+        
+        // Dark mode toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const darkModeIcon = darkModeToggle.querySelector('i');
+            
+            // Check for saved theme preference or default to light mode
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark');
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun');
+            }
+            
+            darkModeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark');
+                
+                // Update icon
+                if (document.body.classList.contains('dark')) {
+                    darkModeIcon.classList.remove('fa-moon');
+                    darkModeIcon.classList.add('fa-sun');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    darkModeIcon.classList.remove('fa-sun');
+                    darkModeIcon.classList.add('fa-moon');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+    <script src="scripts.js"></script>
+</body>
+</html>

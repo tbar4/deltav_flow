@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use deltav_utils::{DeltavFlowResult, DataStream};
+use deltav_utils::{DeltavFlowResult, DeltavStream};
 
 pub mod http_client;
 
@@ -9,5 +9,5 @@ pub mod http_client;
 /// consume and forward to the `Destination` during a run.
 #[async_trait]
 pub trait Source: Send {
-    async fn extract(&self) -> DeltavFlowResult<DataStream>;
+    async fn extract(&self) -> DeltavFlowResult<DeltavStream>;
 }
