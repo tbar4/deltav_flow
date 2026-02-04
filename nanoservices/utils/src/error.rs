@@ -1,4 +1,5 @@
 use thiserror::Error;
+use arrow::error::ArrowError;
 use reqwest::Error as ReqwestError;
 use tokio::io::Error as TokioIoError;
 use polars::error::PolarsError;
@@ -17,4 +18,7 @@ pub enum Error {
 
     #[error("Url Error: {0}")]
     UrlParseError(#[from] ParseError),
+
+    #[error("Arrow Error: {0}")]
+    ArrowError(#[from] ArrowError),
 }
