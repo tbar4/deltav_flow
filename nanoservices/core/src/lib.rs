@@ -25,6 +25,7 @@ pub mod destinations;
 pub mod transforms;
 pub mod dag;
 pub mod events;
+pub mod store;
 pub mod pipeline;
 
 pub mod logging;
