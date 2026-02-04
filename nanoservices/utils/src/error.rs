@@ -1,9 +1,10 @@
 use thiserror::Error;
 use arrow::error::ArrowError;
 use reqwest::Error as ReqwestError;
-use tokio::io::Error as TokioIoError;
+use tokio::{io::Error as TokioIoError};
 use polars::error::PolarsError;
 use url::ParseError;
+use arrow::error::ArrowError;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -20,5 +21,5 @@ pub enum Error {
     UrlParseError(#[from] ParseError),
 
     #[error("Arrow Error: {0}")]
-    ArrowError(#[from] ArrowError),
+    ArrowDataError(#[from] ArrowError),
 }

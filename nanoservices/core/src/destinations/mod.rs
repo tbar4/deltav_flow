@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use deltav_utils::{DataStream, DeltavFlowResult};
+use deltav_utils::{DeltavStream, DeltavFlowResult};
 pub mod file;
 pub mod traits;
 
@@ -9,5 +9,5 @@ pub mod traits;
 /// handles persisting it (for example, writing to a file or uploading to S3).
 #[async_trait]
 pub trait Destination: Send {
-    async fn load(&mut self, stream: DataStream) -> DeltavFlowResult<()>;
+    async fn load(&mut self, stream: DeltavStream) -> DeltavFlowResult<()>;
 }

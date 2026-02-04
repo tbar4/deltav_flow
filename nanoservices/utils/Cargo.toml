@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+arrow.workspace = true
+arrow-json.workspace = true
 futures-util = { workspace = true }
 polars.workspace = true
 reqwest = { workspace = true, features = ["stream"] }

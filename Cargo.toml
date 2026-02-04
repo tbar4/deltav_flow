@@ -38,11 +38,10 @@ async-trait = "0.1.89"
 aws-sdk-s3 = "1.119.0"
 clap = { version = "4.5.54", features = ["derive"] }
 futures-util = "0.3.31"
-reqwest = { version = "0.13.1", features = ["query", "stream"] }
+reqwest = { version = "0.13.1", features = ["json", "query", "stream"] }
 deltav_core = { path = "nanoservices/core" }
 deltav_utils = { path = "nanoservices/utils" }
-arrow = { workspace = true }
-polars = { workspace = true, features = ["json", "lazy"] }
+polars = { workspace = true, features = ["ipc", "ipc_streaming", "json", "lazy"] }
 uuid = { version = "1.19.0", features = ["v4"] }
 url = "2.5.8"
 tracing = "0.1"
@@ -50,5 +49,11 @@ tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
 prometheus = "0.14"
 hyper = { version = "1.8", features = ["server"] }
 once_cell = "1.17"
+arrow = { version = "57.2.0", features = ["json"] }
+arrow-json = "57.2.0"
+datafusion = "52.0.0"
+futures.workspace = true
+serde_json = "1.0.149"
+async-stream = "0.3.6"
 
 

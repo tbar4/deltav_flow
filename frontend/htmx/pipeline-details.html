@@ -1,0 +1,130 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" id="pipeline-modal">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl dark:bg-gray-700">
+        <div class="border-b px-6 py-4 flex justify-between items-center dark:border-gray-600">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Pipeline Details</h3>
+            <button hx-get="/api/close-modal" hx-target="#pipeline-modal" hx-swap="outerHTML" class="text-gray-400 hover:text-gray-500 dark:text-gray-300 dark:hover:text-gray-100">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-6">
+            <div class="flex items-center mb-6">
+                <div class="mr-4">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center dark:bg-blue-900">
+                        <i class="fas fa-stream text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">SpaceDev News</h2>
+                    <p class="text-gray-600 dark:text-gray-300">HTTP → File Pipeline</p>
+                </div>
+                <div class="ml-auto">
+                    <span class="pulse-dot w-3 h-3 bg-green-500 rounded-full mr-2 inline-block"></span>
+                    <span class="text-sm text-green-600 font-medium dark:text-green-400">Active</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-gray-50 rounded-lg p-4 dark:bg-gray-600">
+                    <h4 class="font-medium text-gray-900 mb-3 dark:text-white">Configuration</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Source:</span>
+                            <span class="font-medium dark:text-gray-200">spaceflightnewsapi.net</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Destination:</span>
+                            <span class="font-medium dark:text-gray-200">./tests/data/stream/</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Interval:</span>
+                            <span class="font-medium dark:text-gray-200">30 seconds</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Format:</span>
+                            <span class="font-medium dark:text-gray-200">JSON</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-lg p-4 dark:bg-gray-600">
+                    <h4 class="font-medium text-gray-900 mb-3 dark:text-white">Statistics</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Total Runs:</span>
+                            <span class="font-medium dark:text-gray-200">124</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Success Rate:</span>
+                            <span class="font-medium dark:text-gray-200">98.7%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Avg Duration:</span>
+                            <span class="font-medium dark:text-gray-200">234ms</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600 dark:text-gray-300">Last Run:</span>
+                            <span class="font-medium dark:text-gray-200">2 mins ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="font-medium text-gray-900 mb-3 dark:text-white">Recent Runs</h4>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                        <thead class="bg-gray-50 dark:bg-gray-600">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Time</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Duration</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Records</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-700 dark:divide-gray-600">
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">10:24:15 AM</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">234ms</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">423</td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-400">
+                                        Success
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">10:23:45 AM</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">210ms</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">387</td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-400">
+                                        Success
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">10:23:15 AM</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">256ms</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">401</td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-400">
+                                        Success
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <button hx-get="/api/close-modal" hx-target="#pipeline-modal" hx-swap="outerHTML" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600">
+                    Close
+                </button>
+                <button class="px-4 py-2 bg-blue-600 rounded-md text-sm font-medium text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800">
+                    Edit Pipeline
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

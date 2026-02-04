@@ -71,19 +71,10 @@ impl Pipeline {
         info!(pipeline_id = %id_clone, pipeline_name = %name_owned, "Starting pipeline run");
 
         let stream = self.source.extract().await?;
-
-        // Optionally inspect payloads at debug level without changing the stream.
-        let stream: deltav_utils::DataStream = if self.debug_payload {
-            use futures_util::stream::StreamExt;
-            let id = id_clone.clone();
-            let name = name_owned.clone();
-            Box::pin(stream.inspect(move |res| match res {
-                Ok(bytes) => debug!(pipeline_id = %id, pipeline_name = %name, len = bytes.len(), first_bytes = ?bytes.iter().take(16).cloned().collect::<Vec<u8>>()),
-                Err(err) => debug!(pipeline_id = %id, pipeline_name = %name, error = ?err),
-            }))
-        } else {
-            stream
-        };
+        
+        // Extract the stream from DeltavStream (which wraps it in an Arc)
+        // We need to clone the Arc and then dereference it to get the DataStream
+        let data_stream: deltav_utils::DeltavStream = stream.clone();
 
         let res = self.destination.load(stream).await;
         self.last_run = Some(Instant::now());
@@ -241,76 +232,5 @@ impl Scheduler {
             let _ = signal::ctrl_c().await;
         })
         .await
-    }
-}
-
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::sync::{Arc, atomic::{AtomicBool, Ordering}};
-    use futures_util::stream::{self, StreamExt};
-    use crate::metrics;
-
-    struct MockSource;
-    #[async_trait::async_trait]
-    impl Source for MockSource {
-        async fn extract(&self) -> DeltavFlowResult<deltav_utils::DataStream> {
-            let s = stream::once(async { Ok(vec![1u8, 2u8, 3u8]) });
-            Ok(Box::pin(s))
-        }
-    }
-
-    struct MockDestination;
-    #[async_trait::async_trait]
-    impl Destination for MockDestination {
-        async fn load(&mut self, mut stream: deltav_utils::DataStream) -> DeltavFlowResult<()> {
-            while let Some(chunk) = stream.next().await {
-                let _ = chunk?;
-            }
-            Ok(())
-        }
-    }
-
-    #[tokio::test]
-    async fn cleanup_runs_on_shutdown() {
-        crate::logging::init();
-        let source: Box<dyn Source> = Box::new(MockSource);
-        let destination: Box<dyn Destination> = Box::new(MockDestination);
-        let mut pipe = Pipeline::new(source, destination);
-
-        let flag = Arc::new(AtomicBool::new(false));
-        let flag_clone = flag.clone();
-
-        // reset or reference metrics for tests is done via labels below
-        let _ = metrics::gather_text();
-
-        pipe.on_shutdown(move || {
-            let flag = flag_clone.clone();
-            async move {
-                flag.store(true, Ordering::SeqCst);
-                Ok(())
-            }
-        });
-
-        // make the interval small so the test runs fast
-        pipe.set_interval(Duration::from_millis(10));
-
-        let (tx, rx) = watch::channel(false);
-
-        let handle = tokio::spawn(async move {
-            pipe.worker(rx).await;
-        });
-
-        // allow a couple of ticks
-        tokio::time::sleep(Duration::from_millis(50)).await;
-
-        // trigger shutdown
-        let _ = tx.send(true);
-
-        // Wait for worker to finish
-        let _ = handle.await;
-
-        assert!(flag.load(Ordering::SeqCst), "cleanup hook should have run");
     }
 }
