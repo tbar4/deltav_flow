@@ -28,6 +28,7 @@ pub mod events;
 pub mod store;
 pub mod scheduler;
 pub mod config;
+pub mod builder;
 pub mod pipeline;
 
 pub mod logging;
