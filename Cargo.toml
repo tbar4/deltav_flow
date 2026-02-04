@@ -41,6 +41,7 @@ futures-util = "0.3.31"
 reqwest = { version = "0.13.1", features = ["query", "stream"] }
 deltav_core = { path = "nanoservices/core" }
 deltav_utils = { path = "nanoservices/utils" }
+arrow = { workspace = true }
 polars = { workspace = true, features = ["json", "lazy"] }
 uuid = { version = "1.19.0", features = ["v4"] }
 url = "2.5.8"
