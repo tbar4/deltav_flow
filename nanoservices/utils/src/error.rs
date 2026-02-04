@@ -1,4 +1,5 @@
 use thiserror::Error;
+use arrow::error::ArrowError;
 use reqwest::Error as ReqwestError;
 use tokio::{io::Error as TokioIoError};
 use polars::error::PolarsError;

@@ -11,7 +11,12 @@ futures-util = { workspace = true }
 tokio = { workspace = true }
 futures = { workspace = true }
 polars = { workspace = true }
-uuid = { version = "1.19.0", features = ["v4"] }
+uuid = { workspace = true }
+arrow = { workspace = true }
+serde = { workspace = true }
+serde_yaml = { workspace = true }
+rusqlite = { workspace = true }
+thiserror = { workspace = true }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
 prometheus = "0.14"

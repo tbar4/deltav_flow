@@ -2,6 +2,7 @@ use async_trait::async_trait;
 use deltav_utils::{DeltavFlowResult, DeltavStream};
 
 pub mod http_client;
+pub mod traits;
 
 /// Trait implemented by pipeline data sources.
 ///

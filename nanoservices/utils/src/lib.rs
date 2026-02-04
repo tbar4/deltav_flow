@@ -1,6 +1,10 @@
 pub mod error;
+
+use arrow::datatypes::SchemaRef;
+use arrow::record_batch::RecordBatch;
 use error::Error;
 use std::pin::Pin;
+use std::sync::Arc;
 use futures_util::Stream;
 use std::sync::Arc;
 use arrow::record_batch::RecordBatch;
