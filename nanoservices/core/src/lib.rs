@@ -26,6 +26,7 @@ pub mod transforms;
 pub mod dag;
 pub mod events;
 pub mod store;
+pub mod scheduler;
 pub mod pipeline;
 
 pub mod logging;
