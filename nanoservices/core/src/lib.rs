@@ -23,6 +23,7 @@
 pub mod sources;
 pub mod destinations;
 pub mod transforms;
+pub mod dag;
 pub mod pipeline;
 
 pub mod logging;
