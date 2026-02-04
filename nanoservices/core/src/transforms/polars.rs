@@ -1,11 +1,9 @@
 use async_trait::async_trait;
 use std::collections::HashMap;
-use std::sync::Arc;
 use deltav_utils::{DeltavFlowResult, DeltavStream};
 use crate::transforms::traits::Transform;
 use arrow::array::BooleanArray;
 use arrow::compute;
-use arrow::record_batch::RecordBatch;
 
 /// Drop rows containing any null values.
 /// Uses Arrow compute kernels directly (no Polars interop needed).
@@ -64,8 +62,10 @@ impl Transform for DropNulls {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Arc;
     use arrow::array::{Int32Array, StringArray};
     use arrow::datatypes::{DataType, Field, Schema};
+    use arrow::record_batch::RecordBatch;
 
     #[tokio::test]
     async fn drop_nulls_removes_null_rows() {
