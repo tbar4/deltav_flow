@@ -32,7 +32,7 @@ impl Transform for DropNulls {
         inputs: HashMap<String, DeltavStream>,
     ) -> DeltavFlowResult<DeltavStream> {
         let stream = inputs.into_values().next().unwrap();
-        let batches = stream.into_batches();
+        let batches = stream.batches();
 
         let mut result_batches = Vec::new();
         for batch in batches {

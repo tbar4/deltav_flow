@@ -4,7 +4,6 @@ use reqwest::Error as ReqwestError;
 use tokio::{io::Error as TokioIoError};
 use polars::error::PolarsError;
 use url::ParseError;
-use arrow::error::ArrowError;
 
 #[derive(Debug, Error)]
 pub enum Error {
